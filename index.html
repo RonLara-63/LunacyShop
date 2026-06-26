@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MCJabi Order App</title>
+
+    <style>
+        /* Dark, mechanical/industrial background aesthetic */
+        body {
+            font-family: 'Georgia', 'Arial', sans-serif;
+            background-color: #1a0f0a;
+            background-image: radial-gradient(circle, #2e1a12 10%, #120a06 90%);
+            color: #e6caa3;
+            padding: 30px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Shop Frame Container */
+        .shop-container {
+            border: 4px solid #3c2419;
+            background: #140d0a;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.7);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* Top Header styling matching the game's center Shop banner */
+        h1 {
+            text-align: center;
+            color: #f7e0bc;
+            background: #0f0907;
+            border: 2px solid #523526;
+            margin: 0 auto 30px auto;
+            padding: 10px 40px;
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            width: fit-content;
+            border-radius: 3px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Horizontal Menu Layout */
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        /* Red Card Panel Styling */
+        .item {
+            width: 200px;
+            background: #800c0c;
+            background: linear-gradient(180deg, #9e1212 0%, #520505 100%);
+            border: 3px solid #1a0808;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .item:hover {
+            transform: translateY(-3px);
+        }
+
+        /* White/Gold Product Titles */
+        .item p {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #ffffff;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Image Display container */
+        .item img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            border: 3px solid #140d0a;
+            background-color: #24140e;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Quantity Controls Container */
+        .qty-container {
+            font-size: 14px;
+            color: #fce7cb;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 3px;
+        }
+
+        /* Numeric Inputs designed like industrial fields */
+        input[type="number"] {
+            width: 60px;
+            text-align: center;
+            background: #1c120e;
+            border: 2px solid #5c3e31;
+            color: #ffda9e;
+            padding: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #ba8368;
+        }
+
+        /* Control Panel / Dropdowns */
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+            background: #1f1410;
+            padding: 15px;
+            border: 2px solid #3d271e;
+            border-radius: 4px;
+        }
+
+        .controls label {
+            color: #d1b18c;
+            letter-spacing: 1px;
+        }
+
+        select {
+            padding: 6px 12px;
+            background: #120a07;
+            color: #ffda9e;
+            border: 2px solid #523526;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #9c6c54;
+        }
+
+        /* Button stylized like game menu actions */
+        button {
+            margin-top: 15px;
+            padding: 10px 30px;
+            background: #b58238;
+            background: linear-gradient(180deg, #d4a359 0%, #8c5d1e 100%);
+            color: #140d0a;
+            border: 2px solid #ffebcc;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        button:hover {
+            background: linear-gradient(180deg, #e3b56d 0%, #a6722b 100%);
+        }
+
+        /* Summary Receipt Panel styled after the UI info overlays */
+        #totalPrice {
+            margin-top: 25px;
+            font-size: 16px;
+            text-align: left;
+            background: #140d0a;
+            color: #e0c29b;
+            border: 2px solid #852116;
+            padding: 15px 25px;
+            width: 280px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            line-height: 1.6;
+        }
+
+        #totalPrice strong {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="shop-container">
+
+    <h1>Lunacy Shop</h1>
+
+    <div class="menu">
+
+        <div class="item">
+            <p>Lunacy - ₱60</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy1">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy1" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="item">
+            <p>Lunacy bundle - ₱245</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy2">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy2" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="item">
+            <p>Lunacy Boquet - ₱735</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy3">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy3" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="item">
+            <p>Lunacy Crate - ₱1,470</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy4">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy4" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="item">
+            <p>Lunacy Mound - ₱2,575</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy5">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy5" value="0" min="0">
+            </div>
+        </div>
+
+        <div class="item">
+            <p>Lunacy Hoard - ₱4,905</p>
+            <img src="C:\Users\student\Downloads\lunacy.jpg" alt="Lunacy6">
+            <div class="qty-container">
+                Qty: <input type="number" id="qty-Lunacy6" value="0" min="0">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <label><strong>Discount:</strong></label>
+        <select id="discount">
+            <option value="0">None</option>
+            <option value="0.25">HamHamPangPang Voucher (25%)</option>
+            <option value="0.20">Membership Card (20%)</option>
+            <option value="0.15">Executive Manager (15%)</option>
+        </select>
+        <br>
+        <button onclick="calculateOrder()">Compute Total</button>
+    </div>
+
+    <p id="totalPrice">
+        Discount: ₱0.00<br>
+        <strong>SubTotal: ₱0.00</strong><br>
+        <strong>Total Price: ₱0.00</strong>
+    </p>
+
+</div>
+
+<script>
+function calculateOrder(){
+    const prices = {
+        Lunacy1:60,
+        Lunacy2:245,
+        Lunacy3:735,
+        Lunacy4:1470,
+        Lunacy5:2575,
+        Lunacy6:4905
+    };
+
+    const qtyLunacy1 = parseInt(document.getElementById("qty-Lunacy1").value) || 0;
+    const qtyLunacy2 = parseInt(document.getElementById("qty-Lunacy2").value) || 0;
+    const qtyLunacy3 = parseInt(document.getElementById("qty-Lunacy3").value) || 0;
+    const qtyLunacy4 = parseInt(document.getElementById("qty-Lunacy4").value) || 0;
+    const qtyLunacy5 = parseInt(document.getElementById("qty-Lunacy5").value) || 0;
+    const qtyLunacy6 = parseInt(document.getElementById("qty-Lunacy6").value) || 0;
+
+    const subtotal = (qtyLunacy1 * prices.Lunacy1) +
+                     (qtyLunacy2 * prices.Lunacy2) +
+                     (qtyLunacy3 * prices.Lunacy3) +
+                     (qtyLunacy4 * prices.Lunacy4) +
+                     (qtyLunacy5 * prices.Lunacy5) +
+                     (qtyLunacy6 * prices.Lunacy6);
+
+    const discountRate = parseFloat(document.getElementById("discount").value);
+    const discount = subtotal * discountRate;
+    const total = subtotal - discount;
+
+    document.getElementById("totalPrice").innerHTML = `
+        Discount: ₱${discount.toFixed(2)}<br>
+        <strong>SubTotal: ₱${subtotal.toFixed(2)}</strong><br>
+        <strong>Total Price: ₱${total.toFixed(2)}</strong>
+    `;
+}
+
+// Automatically update total
+document.getElementById("qty-Lunacy1").addEventListener("input", calculateOrder);
+document.getElementById("qty-Lunacy2").addEventListener("input", calculateOrder);
+document.getElementById("qty-Lunacy3").addEventListener("input", calculateOrder);
+document.getElementById("qty-Lunacy4").addEventListener("input", calculateOrder);
+document.getElementById("qty-Lunacy5").addEventListener("input", calculateOrder);
+document.getElementById("qty-Lunacy6").addEventListener("input", calculateOrder);
+document.getElementById("discount").addEventListener("change", calculateOrder);
+
+// Display initial values
+calculateOrder();
+</script>
+
+</body>
+</html>
